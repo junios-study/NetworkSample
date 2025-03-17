@@ -24,22 +24,48 @@ namespace Server
 
                 byte[] buffer = new byte[1024];
                 int RecvLength = clientSocket.Receive(buffer);
-                if (RecvLength <= 0)
+
+                //100+200
+                string message = Encoding.UTF8.GetString(buffer);
+                Console.WriteLine(message);
+
+                String[] numbers = null;
+                int first = 0;
+                int second = 0;
+                int result = 0;
+
+                if (message.Contains("+"))
                 {
-                    //close
-                    //error
-                    isRunning = false;
+                    numbers = message.Split('+');
+                    first = int.Parse(numbers[0]);
+                    second = int.Parse(numbers[1]);
+                    result = first + second;
+                }
+                else if (message.Contains("-"))
+                {
+                    numbers = message.Split('-');
+                    first = int.Parse(numbers[0]);
+                    second = int.Parse(numbers[1]);
+                    result = first - second;
+                }
+                else if (message.Contains("*"))
+                {
+                    numbers = message.Split('*');
+                    first = int.Parse(numbers[0]);
+                    second = int.Parse(numbers[1]);
+                    result = first * second;
+                }
+                else // "/"
+                {
+                    numbers = message.Split('/');
+                    first = int.Parse(numbers[0]);
+                    second = int.Parse(numbers[1]);
+                    result = first / second;
                 }
 
-                Console.WriteLine(Encoding.UTF8.GetString(buffer));
-
-                string message = "태규가 쏜다.";
-                buffer = Encoding.UTF8.GetBytes(message);
+                buffer = Encoding.UTF8.GetBytes(result.ToString());
                 int SendLength = clientSocket.Send(buffer);
-                if ( SendLength <= 0)
-                {
-                    isRunning = false;
-                }
+
 
                 clientSocket.Close();
             }

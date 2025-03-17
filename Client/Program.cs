@@ -13,6 +13,9 @@ namespace Client
     {
         static void Main(string[] args)
         {
+            Random random = new Random();
+            String[] oper = { "+", "-", "*", "/" };
+
             for (int i = 0; i < 100; ++i)
             {
                 Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -24,7 +27,10 @@ namespace Client
 
                 byte[] buffer;
 
-                String messge = "안녕하세요.";
+                //5 
+                //[][][][][][][][][]
+                string json = "{ \"first\" : 123,  \"oper\" : \"+\", \"second\" :  200 }";
+                String messge = $"{random.Next(1, 99999999)}{oper[random.Next(0, 4)]}{random.Next(1, 99999999)}";
                 buffer = Encoding.UTF8.GetBytes(messge);
                 int SendLength = serverSocket.Send(buffer, 0, buffer.Length, SocketFlags.None);
 
