@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace Server
 {
@@ -9,7 +11,7 @@ namespace Server
         {
             Socket listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-            IPEndPoint listenEndPoint = new IPEndPoint(IPAddress.Any, 4000);
+            IPEndPoint listenEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.22"), 4000);
             listenSocket.Bind(listenEndPoint);
 
             listenSocket.Listen(10);
@@ -27,9 +29,12 @@ namespace Server
                     //close
                     //error
                     isRunning = false;
-
                 }
 
+                Console.WriteLine(Encoding.UTF8.GetString(buffer));
+
+                string message = "태규가 쏜다.";
+                buffer = Encoding.UTF8.GetBytes(message);
                 int SendLength = clientSocket.Send(buffer);
                 if ( SendLength <= 0)
                 {

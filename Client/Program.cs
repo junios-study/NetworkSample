@@ -13,20 +13,20 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 100; ++i)
             {
                 Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-                IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 4000);
+                IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.22"), 4000);
                 //IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse("192.168.0.22"), 4000);
                 //IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Loopback, 4000);
-                serverSocket.Connect(serverEndPoint);
+                serverSocket.Connect(serverEndPoint); //bind
 
                 byte[] buffer;
 
-                String messge = "Hello World";
+                String messge = "안녕하세요.";
                 buffer = Encoding.UTF8.GetBytes(messge);
-                int SendLength = serverSocket.Send(buffer);
+                int SendLength = serverSocket.Send(buffer, 0, buffer.Length, SocketFlags.None);
 
                 byte[] buffer2 = new byte[1024];
                 int RecvLength = serverSocket.Receive(buffer2);
